@@ -1,13 +1,10 @@
 import React from "react";
-import Link from "next/link";
+import Items from "../components/Items";
 
 const Home = () => {
   return (
     <div>
-      <p>Hey</p>
-      <Link href="/sell">
-        <a>Foobar</a>
-      </Link>
+      <Items />
     </div>
   );
 };

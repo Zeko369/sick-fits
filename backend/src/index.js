@@ -12,7 +12,7 @@ server.start(
   {
     cors: {
       credentials: true,
-      origin: process.env.FROTEND_URL
+      origin: true
     }
   },
   data => {

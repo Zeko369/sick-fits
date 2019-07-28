@@ -1,13 +1,12 @@
 import React from "react";
-import Link from "next/link";
+
+import CreateItem from "../components/CreateItem";
 
 const Sell = () => {
   return (
     <div>
       <p>Seller</p>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+      <CreateItem />
     </div>
   );
 };
