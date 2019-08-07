@@ -1,10 +1,12 @@
 import React from "react";
 import Items from "../components/Items";
 
-const Home = () => {
+const Home = (props) => {
+  const { page } = props.query;
+
   return (
     <div>
-      <Items />
+      <Items page={parseInt(page) || 1} />
     </div>
   );
 };

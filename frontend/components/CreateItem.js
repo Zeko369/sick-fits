@@ -40,13 +40,13 @@ class CreateItem extends Component {
   //   this.onChange = this.onChange.bind(this);
   // } // arrow functions or this
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, type, value } = e.target;
     const val = type === "number" ? parseInt(value) : value;
     this.setState({ [name]: val });
   };
 
-  uploadFile = async e => {
+  uploadFile = async (e) => {
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
@@ -77,7 +77,7 @@ class CreateItem extends Component {
       <Mutation mutation={CREATE_ITEM_QUERY} variables={this.state}>
         {(createItem, { loading, error }) => (
           <Form
-            onSubmit={async e => {
+            onSubmit={async (e) => {
               e.preventDefault();
               const res = await createItem();
               Router.push({
