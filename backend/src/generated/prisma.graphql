@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/fran-zekan/sick-fits/dev
-# timestamp: Sun Aug 11 2019 12:53:49 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Aug 11 2019 14:47:39 GMT+0200 (Central European Summer Time)
 
 type AggregateItem {
   count: Int!
@@ -478,6 +478,7 @@ enum Permission {
   USER
   ITEMCREATE
   ITEMUPDATE
+  ITEMDELETE
   PREMISSIONUPDATE
 }
 

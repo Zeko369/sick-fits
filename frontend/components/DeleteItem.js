@@ -18,7 +18,7 @@ class DeleteItem extends Component {
 
     // remove deleted item
     data.items = data.items.filter(
-      item => item.id !== payload.data.deleteItem.id
+      (item) => item.id !== payload.data.deleteItem.id
     );
 
     // set cahcse
@@ -33,15 +33,11 @@ class DeleteItem extends Component {
         update={this.update}
       >
         {(deleteItem, { error }) => {
-          if (error) {
-            console.log("alksjdlasjd");
-          }
-
           return (
             <button
               onClick={() => {
                 if (confirm("Do you want to delete?")) {
-                  deleteItem();
+                  deleteItem().catch((err) => alert(err.message));
                 }
               }}
             >
