@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/fran-zekan/sick-fits/dev
-# timestamp: Sun Aug 11 2019 00:07:32 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Aug 11 2019 12:53:49 GMT+0200 (Central European Summer Time)
 
 type AggregateItem {
   count: Int!
@@ -508,7 +508,7 @@ type User implements Node {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  premissions: [Permission!]!
+  permissions: [Permission!]!
 }
 
 """A connection to a list of items."""
@@ -528,7 +528,7 @@ input UserCreateInput {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  premissions: UserCreatepremissionsInput
+  permissions: UserCreatepermissionsInput
 }
 
 input UserCreateOneInput {
@@ -536,7 +536,7 @@ input UserCreateOneInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreatepremissionsInput {
+input UserCreatepermissionsInput {
   set: [Permission!]
 }
 
@@ -571,7 +571,7 @@ type UserPreviousValues {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  premissions: [Permission!]!
+  permissions: [Permission!]!
 }
 
 type UserSubscriptionPayload {
@@ -619,7 +619,7 @@ input UserUpdateDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  premissions: UserUpdatepremissionsInput
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateInput {
@@ -628,7 +628,7 @@ input UserUpdateInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  premissions: UserUpdatepremissionsInput
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyMutationInput {
@@ -637,7 +637,7 @@ input UserUpdateManyMutationInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  premissions: UserUpdatepremissionsInput
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateOneRequiredInput {
@@ -647,7 +647,7 @@ input UserUpdateOneRequiredInput {
   upsert: UserUpsertNestedInput
 }
 
-input UserUpdatepremissionsInput {
+input UserUpdatepermissionsInput {
   set: [Permission!]
 }
 

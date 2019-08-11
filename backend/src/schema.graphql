@@ -4,7 +4,7 @@ type User {
   id: ID!
   name: String!
   email: String!
-  premissions: [Permission!]!
+  permissions: [Permission!]!
 }
 
 type SuccessMessage {
@@ -40,4 +40,5 @@ type Query {
   item(where: ItemWhereUniqueInput!): Item
   itemsConnection(where: ItemWhereInput): ItemConnection!
   me: User
+  users: [User]!
 }

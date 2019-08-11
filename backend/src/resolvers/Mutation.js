@@ -63,7 +63,7 @@ const mutations = {
           name,
           email: lower_email,
           password: hashed_password,
-          premissions: { set: ["USER"] } // TODO: I KNOW ALI NE DA MI SE MIJNJATI
+          permissions: { set: ["USER"] } // TODO: I KNOW ALI NE DA MI SE MIJNJATI
         }
       },
       info

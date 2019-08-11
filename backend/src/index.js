@@ -23,6 +23,24 @@ server.express.use((req, res, next) => {
   next();
 });
 
+// middleware for current user
+server.express.use(async (req, res, next) => {
+  const { userId } = req;
+
+  if (!userId) {
+    return next();
+  }
+
+  const user = await db.query.user(
+    { where: { id: userId } },
+    "{id, permissions, email, name}"
+  );
+
+  req.user = user;
+
+  next();
+});
+
 server.start(
   {
     cors: {
