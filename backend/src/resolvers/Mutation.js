@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
+
 const { transport, makeANiceEmail } = require("../mail");
 const { hasPermission } = require("../utils");
 
@@ -143,9 +144,7 @@ const mutations = {
       to: user.email,
       subject: "Password reset token",
       html: makeANiceEmail(`Your password reset token is \n\n
-      <a href="${
-        process.env.FRONTEND_URL
-      }/reset?token=${resetToken}">Reset token</a>\n\n${resetToken}`)
+      <a href="${process.env.FRONTEND_URL}/reset?token=${resetToken}">Reset token</a>\n\n${resetToken}`)
     });
 
     return { text: "Password reset link sent" };
@@ -205,6 +204,67 @@ const mutations = {
       },
       info
     );
+  },
+  async addToCart(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error("You must be logged in to do that");
+    }
+
+    console.log(ctx.db.query);
+
+    const [existingCartItem] = await ctx.db.query.cartItems({
+      where: {
+        user: { id: userId },
+        item: { id: args.id }
+      }
+    });
+
+    if (existingCartItem) {
+      console.log("Has this");
+      return ctx.db.mutation.updateCartItem(
+        {
+          where: { id: existingCartItem.id },
+          data: { quantity: existingCartItem.quantity + 1 }
+        },
+        info
+      );
+    }
+
+    return ctx.db.mutation.createCartItem(
+      {
+        data: {
+          user: { connect: { id: userId } },
+          item: { connect: { id: args.id } }
+        }
+      },
+      info
+    );
+  },
+  async removeFromCart(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error("You must be logged in to do that");
+    }
+
+    const item = await ctx.db.query.cartItem(
+      {
+        where: { id: args.id }
+      },
+      "{user {id}}"
+    );
+
+    if (item) {
+      if (item.user.id === userId) {
+        return ctx.db.mutation.deleteCartItem({ where: { id: args.id } }, info);
+      } else {
+        throw new Error("You cant delete that item");
+      }
+    }
+
+    throw new Error("Item not found");
   }
 };
 

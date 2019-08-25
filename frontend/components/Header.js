@@ -5,6 +5,7 @@ import styled, { consolidateStreamedStyles } from "styled-components";
 import NProgress from "nprogress";
 
 import Nav from "./Nav";
+import Cart from './Cart'
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -73,7 +74,7 @@ const Header = () => {
       <div className="sub-bar">
         <p>Serach</p>
       </div>
-      <div>Cart</div>
+      <Cart/>
     </StyledHeader>
   );
 };
