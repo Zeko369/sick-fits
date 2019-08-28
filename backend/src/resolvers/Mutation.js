@@ -5,6 +5,7 @@ const { promisify } = require("util");
 
 const { transport, makeANiceEmail } = require("../mail");
 const { hasPermission } = require("../utils");
+const stripe = require("../stripe");
 
 const mutations = {
   async createItem(parent, args, ctx, info) {
@@ -265,6 +266,86 @@ const mutations = {
     }
 
     throw new Error("Item not found");
+  },
+  async createOrder(parent, args, ctx, info) {
+    // Get user
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error("You must be logged in to do that");
+    }
+
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: userId
+        }
+      },
+      `{
+          id
+          name
+          email
+          cart {
+            id
+            quantity
+            item {
+              id
+              title
+              price
+              description
+              image
+              largeImage
+            }
+          }
+        }`
+    );
+
+    // Calc total
+    const amount = user.cart.reduce(
+      (all, cartItem) => all + cartItem.item.price * cartItem.quantity,
+      0
+    );
+    console.log(amount);
+
+    // Create stripe charge
+    const charge = await stripe.charges.create({
+      amount,
+      currency: "USD",
+      source: args.token
+    });
+
+    // Cart items -> Order Items
+    const orderItems = user.cart.map((cartItem) => {
+      const orderItem = {
+        quantity: cartItem.quantity,
+        user: {
+          connect: { id: userId }
+        },
+        ...cartItem.item
+      };
+
+      delete orderItem.id;
+      return orderItem;
+    });
+
+    // Create an order
+    const order = await ctx.db.mutation.createOrder({
+      data: {
+        total: amount,
+        charge: charge.id,
+        items: { create: orderItems },
+        user: { connect: { id: userId } }
+      }
+    });
+
+    // clean up cart, delete cart items
+    const cartItemIds = user.cart.map((cartItem) => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: { id_in: cartItemIds }
+    });
+
+    // return order
+    return order;
   }
 };
 
