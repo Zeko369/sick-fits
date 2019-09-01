@@ -52,7 +52,7 @@ const Query = {
       throw new Error("You need to be logged in");
     }
 
-    return ctx.db.query.orders({ where: { user: { id: userId } } });
+    return ctx.db.query.orders({ where: { user: { id: userId } } }, info);
   }
 };
 
