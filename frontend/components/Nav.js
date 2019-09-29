@@ -12,7 +12,7 @@ const Nav = () => {
   return (
     <User>
       {({ data: { me }, error }) => (
-        <NavStyles>
+        <NavStyles data-test="nav">
           <Link href="items">
             <a>Shop</a>
           </Link>
